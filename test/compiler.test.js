@@ -852,6 +852,19 @@ describe('compiler', function() {
           },
         ]);
     });
+
+    it('supports shorthand notation for middleware paths', function() {
+      appdir.writeConfigFileSync('middleware.json', {
+        'final': {
+          'loopback/url-not-found': {}
+        }
+      });
+
+      var instructions = boot.compile(appdir.PATH);
+
+      expect(instructions.middleware.middleware[0].sourceFile)
+        .to.equal(require.resolve('loopback/server/middleware/url-not-found'));
+    });
   });
 });
 
